@@ -1,0 +1,34 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v6.0"></script>
+  <article class="media content-section">
+    <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}">
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-2" href="#">author: {{ object.author }}</a>
+        <small class="text-muted">published date: {{ object.pub_date|date:"F d, Y" }}</small>
+        <div class="fb-like" data-href="http://127.0.0.1:8000/post/{{post.pk}}" data-layout="standard" data-action="like" data-size="large" data-show-faces="false" data-share="true"></div><br>
+        {% if object.author == user %}
+          <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Update</a>
+            <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>
+          </div>
+        {% endif %}
+      </div>
+        <p><img src="/media/{{object.thumbnail}}" height="300px" width="300px"/></p>
+      <h2 class="article-title">{{ object.title }}</h2>
+        <h2 class="article-title">{{ object.head0 }}</h2>
+        <p class="article-content">{{ object.chead0 }}</p>
+        <h2 class="article-title">{{ object.head1 }}</h2>
+        <p class="article-content">{{ object.chead1 }}</p>
+        <h2 class="article-title">{{ object.head2 }}</h2>
+        <p class="article-content">{{ object.chead2 }}</p>
+       {% if object.video != null %}
+        <p><video height="300" width="500" controls>
+          <source src="/media/{{object.video}}" type="video/mp4">
+        </video></p>
+        {%endif%}
+      <div class="fb-comments" data-href="http://127.0.0.1:8000/post/{{post.pk}}" data-numposts="10" data-width="">
+    </div>
+  </article>
+{% endblock content %}

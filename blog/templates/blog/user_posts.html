@@ -1,0 +1,218 @@
+{% extends "blog/base.html" %}
+{%block design%}
+ <style>body {
+  background: #333333 !important;
+  color: #ffffff !important;
+  margin-top: 5rem;
+}
+.nav-link {
+    color: rgb(255,255,255) !important;
+}
+a {
+    color: #ffffff !important;
+    text-decoration: none;
+    background-color: transparent;
+    -webkit-text-decoration-skip: objects;
+}
+img.blogImg{
+    width: 200px;
+    height:320px !important;
+}
+#pageIndex{
+display:inline-block;
+align-item:center;
+justify-content:center;
+margin:auto;
+}
+}
+.btn-success {
+    color: #fff;
+    background-color: #5f788a;
+    /* border-color: #28a745; */
+}
+#nav{
+    align-item:center;
+}
+#poplist{
+    max-width: 100%;
+     background-color:#5f788a;/* Max Width of the popover (depending on the container!) */
+}
+._8-yf5 {
+    display: block;
+    position: relative;
+    background-color:#000000;
+}
+svg[Attributes Style] {
+    fill: rgb(38, 38, 38);
+    height: 22;
+    width: 22;
+}
+svg:not(:root) {
+    overflow: hidden;
+}
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
+}
+.btn-success:visited {
+    color: #ffffff;
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+}
+.btn-success:active {
+    color: #ffffff;
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+}
+.btn-success:hover {
+    color: #ffffff;
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+}
+ul {
+  margin: 0;
+}
+
+.bg-steel {
+  background-color: #000000;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #cbd5db;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.article-title {
+  color: #444444;
+}
+
+a.article-title:hover {
+  color: #428bca;
+  text-decoration: none;
+}
+
+.article-content {
+  white-space: pre-line;
+}
+
+.article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+}
+
+.article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3
+}
+
+.article-metadata a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+.account-img {
+  height: 100%;
+  width: 100%;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+a:active{
+color:blue;
+}
+.account-heading {
+  font-size: 2.5rem;
+}
+.btn-success {
+    color: #000000 !important;
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+}
+.text-muted {
+    color: #ffffff !important;
+}
+#link{
+    text-decoration:none;
+    background-color:green;
+
+}</style>
+{% endblock %}
+{% block content %}
+    <main role="main" class="container">
+         {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        <h1 class="mb-3" id="h">Posts by {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h1><br/>
+      <div class="row my-3 mt-5">
+    {%for item in posts%}
+        <div class="col-md-6 mt-3">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <img class="rounded-circle article-img" src="{{ item.author.profile.image.url }}">
+                    <a href="profile/{{item.author_id}}/"><strong class="d-inline-block mb-2 text-primary">{{item.author}}</strong></a>
+                    <a href="post/{{item.id}}/" class="stretched-link"><h3 class="mb-2">{{item.title}}</h3></a>
+                    <p class="card-text mb-auto">{{item.head0}}</p>
+                     <p class="card-text mb-auto">{{item.head1}}</p>
+                    <div class="mb-1 text-muted">{{item.pub_date}}</div>
+<!--                    <a href="blogPost/{{item.post_id}}" class="stretched-link">Continue reading</a>-->
+                    <a href="post/{{item.id}}/" class="stretched-link">Continue reading</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <img src="/media/{{item.thumbnail}}" class="bd-placeholder-img blogImg" width="200" height="270" xmlns="http://www.w3.org/2000/svg"
+                        preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+                        aria-label="Placeholder: Thumbnail"/>
+                </div>
+            </div>
+        </div>
+    {% if forloop.counter|divisibleby:2%}
+        </div><div class="row my-2">
+        {%endif%}
+        {%endfor%}
+        <div id="pageIndex">
+        {% if is_paginated %}
+      {% if page_obj.has_previous %}
+        <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+      {% endif %}
+    {% endif %}
+    </div>
+    </main>
+    {% endblock content %}
+{%block js%}
+{% endblock %}

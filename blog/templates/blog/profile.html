@@ -1,0 +1,37 @@
+{% extends "blog/base.html" %}
+{%block design%}
+{% endblock %}
+{% block content %}
+    <div class="content-section col-md-12 col-sm-12 col-lg-12">
+      <div class="media">
+        <img class="square-circle account-img" src="{{ user.profile.image.url }}">
+        <div class="media-body">
+          <h2 class="account-heading">UserName:{{user.username }}</h2>
+          <p class="text-secondary">Email:<div class="alert alert-dark" role="alert">
+            {{user.email}}</div></p>
+            <p class="text-secondary">Mobile No:<br><div class="alert alert-dark" role="alert">
+  {{user.profile.mobile_no}}</div></p>
+            <p class="text-secondary">Clg Name:<br><div class="alert alert-dark" role="alert">{{user.profile.clg_name}}</div></p>
+            <p class="text-secondary">Degree:<br><div class="alert alert-dark" role="alert">{{user.profile.degree}}</div></p>
+            <p class="text-secondary">Skills:<br><div class="alert alert-dark" role="alert">{{user.profile.skill}}</div></p>
+            <a id="link" href="{% url 'edit'%}"><button class="btn btn-success">edit</button></a>
+<!--            here user is inbuilt object which reflect the current user which is log in we do not need to pass any dictnary which have key value is user. like in home.html we use {{post.title}} here we need to pass dict which have post as key of dict. -->
+        </div>
+      </div>
+      <!-- FORM HERE -->
+<!--       <form method="POST" enctype="multipart/form-data">-->
+<!--          {% csrf_token %}-->
+<!--          <fieldset class="form-group">-->
+<!--              <legend class="border-bottom mb-4">Profile Info</legend>-->
+<!--              {{ u_form.as_p }}-->
+<!--              {{ p_form.as_p }}-->
+<!--          </fieldset>-->
+<!--          <div class="form-group">-->
+<!--              <button class="btn btn-outline-info" type="submit">Update</button>-->
+<!--          </div>-->
+<!--    </form>-->
+    </div>
+{% endblock content %}
+{%block js%}
+
+{% endblock %}
