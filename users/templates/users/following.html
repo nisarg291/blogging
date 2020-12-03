@@ -1,0 +1,62 @@
+{% extends "blog/base.html" %}
+{%block design%}
+<style>
+#link{ text-decoration:none;
+    background-color:green;
+    }
+    .fr{
+    float:right;
+    }
+    .s1{
+    float:left;
+    }
+    .b1{
+        margin-top:auto;
+        disable=true;
+    }
+</style>
+{% endblock %}
+{% block content %}
+ <div class="content-section col-md-12 col-sm-12 col-lg-12">
+      <div class="media">
+          <input type="hidden" id="userId" value="{{user.id}}">
+          <input type="hidden" id="userFriends" value="{{Friends}}">
+          <div class="media-body" id="divfriend"></div>
+      </div>
+ </div>
+{%endblock%}
+{%block js%}
+<script>
+var userId=document.getElementById("userId").value;
+var userFriends=document.getElementById("userFriends").value;
+var divfriend=document.getElementById('divfriend');
+console.log(userFriends);
+var cart = eval(userFriends);
+console.log(typeof cart);
+console.log(cart);
+Array.from(cart).forEach(function(dict){
+    if (dict['following']=="true"){
+            divfriend.innerHTML+=`<div class="alert alert-primary" id="div`+dict['id']+`" role="alert"><img src="http://127.0.0.1:8000/media/`+dict['image']+`" class="rounded-circle article-img">`+dict["name"]+`<div class="fr"><a href="accept/`+dict['id']+`/"><button class="btn btn-success accept b1" id="following`+dict['id']+`">following</button></a></div></div>`
+    }
+})
+function fun1(s){
+    var id2=s.id;
+    var id=document.getElementById(id2).innerHTML;
+    if(id=="following"){
+    var id1=s.id.slice(6,);
+    console.log(id1);
+    cart[id1][3]=false;
+    localStorage.setItem(userId, JSON.stringify(cart));
+    document.getElementById(s.id).innerHTML="follow";
+    }
+    else{
+    id1=s.id.slice(6,);
+    console.log(id1);
+    cart[id1][3]=true;
+    localStorage.setItem(userId, JSON.stringify(cart));
+    document.getElementById(s.id).innerHTML="following";
+    }
+
+}
+</script>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "blog/base.html" %}
+{%block design%}
+<style>
+#link{ text-decoration:none;
+    background-color:green;
+
+    }
+</style>
+{% endblock %}
+{% block content %}
+    <div class="content-section col-md-12 col-sm-12 col-lg-12">
+      <div class="media">
+        <div class="media-body">
+        <img class="square-circle account-img" id="image" src="{{ image.url }}">
+
+          <h2 class="account-heading"><div id="name">{{username}}</div></h2>
+            <input type="hidden" value="{{id}}" id="userid">
+            <input type="hidden" value="{{Cuserid}}" id="Cuserid">
+            <input type="hidden" value="{{CuserName}}" id="CuserName">
+            <input type="hidden" value="{{Friends}}" id="CuserFriends">
+            <div style="display:none">
+            <img class="square-circle account-img" id="CuserProfile" src="{{ CuserProfile.url}}">
+              </div>
+            <span class="b1 divpr" id="divpr"><a href="../../friend/{{id}}/">
+              <button class="btn btn-success friend" id="friends">{{msg}}</button></a>
+            </span>
+          <p class="text-secondary">Email:<div class="alert alert-dark" role="alert">
+  {{email}}</div></p>
+            <p class="text-secondary">Mobile No:<br><div class="alert alert-dark" role="alert">
+  {{mobile_no}}</div></p>
+            <p class="text-secondary">Clg Name:<br><div class="alert alert-dark" role="alert">{{clg_name}}</div></p>
+            <p class="text-secondary">Degree:<br><div class="alert alert-dark" role="alert">{{degree}}</div></p>
+            <p class="text-secondary">Skills:<br><div class="alert alert-dark" role="alert">{{skill}}</div></p>
+<!--            here user is inbuilt object which reflect the current user which is log in we do not need to pass any dictnary which have key value is user. like in home.html we use {{post.title}} here we need to pass dict which have post as key of dict. -->
+        </div>
+      </div>
+
+    </div>
+{% endblock content %}
+{%block js%}
+<script>
+var friends=document.getElementById('friends');
+var userid=document.getElementById('userid').value;
+var Cuserid=document.getElementById('Cuserid').value;
+var CuserFriends=document.getElementById('CuserFriends').value;
+if (Cuserid==userid){
+divpr.style.display="none";
+}
+if(friends.innerHTML!="follow"){
+friends.disabled=true;
+}
+cart=eval(CuserFriends);
+function pop(){
+var popstr = "";
+popstr = popstr + "<div class='mx-2 my-2'>";
+Array.from(cart).forEach(function(dict){
+    console.log(dict)
+    if (dict['followers']=="false"){
+      popstr=popstr+`<div class="alert alert-primary" role="alert"><img src="http://192.168.0.104:8000/media/`+dict["image"]+`" style="height:50px;width:50px">`;
+        popstr=popstr+dict['name']+`<a href="../accept/"`+dict['id']+`"><button class="btn ml-3" id="accept`+dict['id']+`" onclick="fun1(this)">accept</button></a></div><br/>`;
+     }
+})
+popstr = popstr + "</div>";
+document.getElementById('poplist').setAttribute('data-content', popstr);
+$('#poplist').popover('show');
+}
+<!--if(localStorage.getItem(userid) == null){-->
+<!--var cart = {};-->
+<!--}-->
+<!--else-->
+<!--{-->
+<!--cart = JSON.parse(localStorage.getItem(userid));-->
+<!--}-->
+<!--if(localStorage.getItem(Cuserid) == null){-->
+<!--var cart1 = {};-->
+<!--}-->
+<!--else-->
+<!--{-->
+<!--cart1 = JSON.parse(localStorage.getItem(Cuserid));-->
+<!--}-->
+<!--$('.divpr').on('click', 'button.friend', function(){-->
+<!--    flag=false;-->
+<!--    CuserName=document.getElementById('CuserName').value;-->
+<!--    CuserProfile=document.getElementById('CuserProfile').src;-->
+<!--    cart[Cuserid]=[Cuserid,CuserName,CuserProfile,flag]-->
+<!--&lt;!&ndash;    var uname=document.getElementById('name').innerHTML;&ndash;&gt;-->
+<!--&lt;!&ndash;    var img=document.getElementById('image').src;&ndash;&gt;-->
+<!--&lt;!&ndash;    cart1[userid]=[userid,uname,img,flag]&ndash;&gt;-->
+<!--    localStorage.setItem(userid, JSON.stringify(cart));-->
+<!--&lt;!&ndash;    localStorage.setItem(Cuserid, JSON.stringify(cart1));&ndash;&gt;-->
+<!--    friends.innerHTML="request send";-->
+<!--});-->
+</script>
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends "blog/base.html" %}
+{%block design%}
+<style>
+#link{ text-decoration:none;
+    background-color:green;
+    }
+    .b1{
+    margin-left:70%;
+    }
+    .s1{
+    margin-left:2%;
+    font-size:20px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+    <div class="content-section col-md-12 col-sm-12 col-lg-12">
+      <div class="media">
+        <div class="media-body">
+            <img class="square-circle account-img" id="image" src="{{ user.profile.image.url }}">
+            <input type="hidden" value="{{user.id}}" id="userid">
+            <input type="hidden" value="{{Friends}}" id="userFriends">
+            <h2 class="account-heading"><div id="name">{{user.username }}</div></h2>
+            <a href="../followers" class="mr-3">followers(<span id="follow">0</span>)</a><a class="ml-3" href="../following">following(<span id="following">0</span>)</a>
+          <p class="text-secondary">Email:<div class="alert alert-dark" role="alert">
+  {{user.email}}</div></p>
+            <p class="text-secondary">Mobile No:<br><div class="alert alert-dark" role="alert">
+  {{user.profile.mobile_no}}</div></p>
+            <p class="text-secondary">Clg Name:<br><div class="alert alert-dark" role="alert">{{user.profile.clg_name}}</div></p>
+            <p class="text-secondary">Degree:<br><div class="alert alert-dark" role="alert">{{user.profile.degree}}</div></p>
+            <p class="text-secondary">Skills:<br><div class="alert alert-dark" role="alert">{{user.profile.skill}}</div></p>
+            <a id="link" href="{% url 'edit'%}"><button class="btn btn-success">edit</button></a>
+<!--            here user is inbuilt object which reflect the current user which is log in we do not need to pass any dictnary which have key value is user. like in home.html we use {{post.title}} here we need to pass dict which have post as key of dict. -->
+            <div id="divfriend">
+            friends requests<br>
+            </div>
+        </div>
+
+      </div>
+
+
+    </div>
+{% endblock content %}
+{%block js%}
+<script>
+cart={}
+divfriend=document.getElementById('divfriend');
+userid=document.getElementById('userid').value;
+userFriends=document.getElementById('userFriends').value;
+<!--var Dict = require("collections/dict");-->
+console.log(userid);
+cart = eval(userFriends);
+console.log(typeof cart);
+console.log("before cart");
+console.log(cart);
+console.log("after cart");
+sum=0;
+<!--var dict = new Dict(cart, function (key,value) {-->
+<!--    return "default: " + key;-->
+<!--});-->
+
+Array.from(cart).forEach(function(dict){
+    console.log(dict)
+    if (dict['followers']=="false"){
+     divfriend.innerHTML+='<div class="alert alert-primary" id="div'+dict["id"]+'" role="alert"><img src="http://192.168.0.104:8000/media/'+dict['image']+'" class="rounded-circle article-img"><span class="s1">'+dict["name"]+'</span><a href="../accept/'+dict['id']+'/"><button class="btn btn-success accept b1" id="accept'+dict["id"]+'">accept</button></a></div>'
+     }
+})
+function pop(){
+var popstr = "";
+popstr = popstr + "<div class='mx-2 my-2'>";
+Array.from(cart).forEach(function(dict){
+    console.log(dict)
+    if (dict['followers']=="false"){
+      popstr=popstr+`<div class="alert alert-primary" role="alert"><img src="http://192.168.0.104:8000/media/`+dict["image"]+`" style="height:50px;width:50px">`;
+        popstr=popstr+dict['name']+`<a href="../accept/`+dict['id']+`/"><button class="btn ml-3" id="accept`+dict['id']+`" onclick="fun1(this)">accept</button></a></div><br/>`;
+     }
+})
+popstr = popstr + "</div>";
+document.getElementById('poplist').setAttribute('data-content', popstr);
+$('#poplist').popover('show');
+}
+<!--    let upd=JSON.parse(cart[i]);-->
+<!--    console.log(upd);-->
+<!--    if(cart[i]['flag']==false){-->
+<!--        sum=sum+1;-->
+<!--        console.log(cart[i]['flag'])-->
+<!--        divfriend.innerHTML+='<div class="alert alert-primary" id="div'+cart[i]["id"]+'" role="alert"><span class="s1">'+cart[i]["name"]+'</span><a href="accept/'+cart[i]["id"]+'/"><button class="btn btn-success accept b1" id="accept'+cart[i]["id"]+'" onclick="fun1(this)">accept</button></a></div>'-->
+<!--    }-->
+<!--Array.from(cart).forEach(function(name){-->
+<!--    console.log(name);-->
+<!--})-->
+function fun1(s){
+ id1=s.id.slice(6,);
+ console.log(id1);
+   cart[id1][3]=true;
+   localStorage.setItem(userid, JSON.stringify(cart));
+   document.getElementById('div'+id1).innerHTML="";
+   document.getElementById(s.id).innerHTML="follow";
+   var flag=true;
+   var name=document.getElementById('name').innerHTML;
+    var image=document.getElementById('image').src;
+
+<!--    cart1 = JSON.parse(localStorage.getItem(cart[id1][0]));-->
+<!--    cart1[userid][3]=true;-->
+<!--   localStorage.setItem(cart[id1][0], JSON.stringify(cart1));-->
+
+<!--   cart1=JSON.parse(localStorage.getItem(cart[id1][0]))-->
+}
+var sum=0;
+var sum1=0;
+Array.from(cart).forEach(function(dict){
+    console.log(dict)
+    if (dict['followers']=="true"){
+     sum=sum+1;
+     }
+     if (dict['following']=="true"){
+     sum1=sum1+1;
+     }
+})
+document.getElementById('follow').innerHTML=sum;
+document.getElementById('following').innerHTML=sum1;
+</script>
+{% endblock %}
